@@ -12,28 +12,24 @@ class EssayForm extends React.Component {
 
   handleChange(event) {
     const showdown = require('showdown');
-
     let converter = new showdown.Converter(),
-      text      = event.target.value,
-      html      = converter.makeHtml(text);
+      text      = event.target.value
 
-    // console.log('<MK>:' + JSON.stringify(event.target.value));
-    console.log('<MK>:' + JSON.stringify(html,null,2));
+    this.setState({parsedValue: converter.makeHtml(text)});
     this.setState({value: event.target.value});
   }
 
   render() {
+    console.log(this.state.parsedValue);
     return (
       <div className="example">
         <form onSubmit={this.handleSubmit}>
           <h1>Editor</h1>
             <textarea value={this.state.value} onChange={this.handleChange} cols={40} rows={10} />
-          {/* <input type="submit" value="Submit" /> */}
         </form>
         <div className="preview">
           <h1>Preview</h1>
-          <div innerHTML="this.state.value"></div>
-          <div>{this.state.value}</div>
+          <div dangerouslySetInnerHTML={{ __html: this.state.parsedValue}}/>
         </div>
       </div>
     );
